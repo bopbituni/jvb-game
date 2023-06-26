@@ -29,7 +29,7 @@ Route::prefix('aoe')->middleware('auth')->group(function () {
     Route::get('show-link-survey/{token}', [SurveyController::class, 'createSurveyDone'])->name('aoe.show_link_survey');
     Route::get('create-link-survey', [SurveyController::class, 'indexLinkSurvey'])->name('aoe.get_link_survey');
     Route::post('create-link-survey', [SurveyController::class, 'createLinkSurvey'])->name('aoe.post_link_survey');
-    Route::get('sep-up-the-formation', );
+    Route::get('set-up-team', [SurveyController::class, 'setUpTeam'])->name('aoe.set_up_team');
 });
 
 Route::get('{game}/survey/{token}', [SurveyController::class, 'showSurveyFormPage'])->name('survey.index');

@@ -70,7 +70,6 @@
                     <label class="col-md-4">{{$desc->bet}}</label>
                 </div>
 
-                <input name="ip" hidden value="{{request()->ip()}}" />
                 <input name="survey_link_id" hidden value="{{$survey->id}}" />
 
                 <div class="mt-45 pb-80 sp-pb-50 d-flex align-items-center justify-content-center">

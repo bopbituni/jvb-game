@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gamer;
 use App\Models\Survey;
 use App\Models\SurveyLink;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -180,5 +181,27 @@ class SurveyController extends Controller
         if (!$survey || now()->greaterThan($survey->expire_time)) {
             abort(404);
         }
+    }
+
+    public function setUpTeam() {
+        $gamers = Survey::with('gamer')
+                ->join('survey_link', 'survey_link.id', '=', 'survey.survey_link_id')
+                ->where('survey_link.expire_time', '>', Carbon::now())
+                ->get();
+        $arr = [];
+        $t1 = $t2 = $t3 = $t4 = 1;
+        foreach ($gamers as $gamer) {
+            if ($gamer->gamer->top == 1 && $t1 <= 2) {
+                $arr["{$gamer->gamer->top}-1"] = ['Minh', 'Tiến'];
+                $arr["{$gamer->gamer->top}-2"] = ['Tuấn', 'Sơn'];
+            } else if ($gamer->gamer->top == 2 && $t2 <= 2) {
+                $arr["{$gamer->gamer->top}-$t2"] = $gamer->gamer->name;
+            } else if ($gamer->gamer->top == 3 && $t3 <= 2) {
+                $arr["{$gamer->gamer->top}-$t3"] = $gamer->gamer->name;
+            } else if ($gamer->gamer->top == 4 && $t4 <= 2) {
+                $arr["{$gamer->gamer->top}-$t4"] = $gamer->gamer->name;
+            }
+        }
+        return view('aoe.set_up_team');
     }
 }

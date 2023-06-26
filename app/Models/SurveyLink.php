@@ -18,4 +18,9 @@ class SurveyLink extends Model
     ];
 
     protected $table = "survey_link";
+
+    public function surveys()
+    {
+        return $this->hasMany(Survey::class, 'survey_link_id');
+    }
 }

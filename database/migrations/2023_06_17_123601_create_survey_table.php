@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('gamer_id');
             $table->unsignedInteger('survey_link_id');
-            $table->tinyInteger('is_play')->comment("0: Có, 1: Không");
-            $table->string('ip')->nullable();
+            $table->tinyInteger('is_play')->comment("0: Không, 1: Có");
             $table->timestamps();
             $table->softDeletes();
         });

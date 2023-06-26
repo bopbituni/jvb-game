@@ -9,6 +9,6 @@ class Gamer extends Model
 {
     use HasFactory;
 
-    public const YES = 0;
-    public const NO = 1;
+    public const YES = 1;
+    public const NO = 0;
 }

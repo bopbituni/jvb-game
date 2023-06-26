@@ -33,7 +33,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/companies/transaction" class="nav-link d-flex align-items-center ">
+                <a href="{{route('aoe.set_up_team')}}" class="nav-link d-flex align-items-center ">
                     <img src="/assets/imgs/ico-menu-3.svg" class="height-15 width-15" />
                     <p>
                         Xếp đội hôm nay

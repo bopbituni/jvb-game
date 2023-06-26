@@ -15,7 +15,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
     <!-- Base CSS -->
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" media="all" type="text/css" />
+    <link href="{{asset('css/base.css')}}" rel="stylesheet" media="all" type="text/css" />
 
 </head>
 

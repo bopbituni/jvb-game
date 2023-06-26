@@ -17,9 +17,18 @@ class Survey extends Model
     protected $fillable = [
         'gamer_id',
         'survey_link_id',
-        'is_play',
-        'ip'
+        'is_play'
     ];
 
     protected $table = "survey";
+
+    public function surveyLink()
+    {
+        return $this->belongsTo(SurveyLink::class);
+    }
+
+    public function gamer()
+    {
+        return $this->belongsTo(Gamer::class);
+    }
 }
