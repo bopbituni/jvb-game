@@ -30,6 +30,7 @@ Route::prefix('aoe')->middleware('auth')->group(function () {
     Route::get('create-link-survey', [SurveyController::class, 'indexLinkSurvey'])->name('aoe.get_link_survey');
     Route::post('create-link-survey', [SurveyController::class, 'createLinkSurvey'])->name('aoe.post_link_survey');
     Route::get('set-up-team', [SurveyController::class, 'setUpTeam'])->name('aoe.set_up_team');
+    Route::post('finish-game', [SurveyController::class, 'finishGame'])->name('aoe.finish_game');
 });
 
 Route::get('{game}/survey/{token}', [SurveyController::class, 'showSurveyFormPage'])->name('survey.index');

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('game_id');
+            $table->unsignedInteger('game_id')->nullable();
             $table->unsignedInteger('gamer_id');
             $table->tinyInteger('is_win');
             $table->timestamps();

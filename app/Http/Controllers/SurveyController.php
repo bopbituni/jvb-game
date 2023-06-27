@@ -188,20 +188,46 @@ class SurveyController extends Controller
                 ->join('survey_link', 'survey_link.id', '=', 'survey.survey_link_id')
                 ->where('survey_link.expire_time', '>', Carbon::now())
                 ->get();
-        $arr = [];
+        $setUpTeam = [];
+        //Số lượng top hiện tại
         $t1 = $t2 = $t3 = $t4 = 1;
-        foreach ($gamers as $gamer) {
+        //Số lượng top tham gia
+        $n_top2 = $n_top3 = 0;
+        foreach ($gamers as &$gamer) {
             if ($gamer->gamer->top == 1 && $t1 <= 2) {
-                $arr["{$gamer->gamer->top}-1"] = ['Minh', 'Tiến'];
-                $arr["{$gamer->gamer->top}-2"] = ['Tuấn', 'Sơn'];
+                $setUpTeam["{$gamer->gamer->top}-1"] = [1 => 'Minh', 2 => 'Tuấn'];
+                $setUpTeam["{$gamer->gamer->top}-2"] = [3 => 'Sơn', 4 => 'Tiến'];
             } else if ($gamer->gamer->top == 2 && $t2 <= 2) {
-                $arr["{$gamer->gamer->top}-$t2"] = $gamer->gamer->name;
+                $n_top2++;
+                $setUpTeam["{$gamer->gamer->top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
+                if ($n_top2 > 2) {
+                    $top = $gamer->gamer->top + 1;
+                    $setUpTeam["{$top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
+                    unset($setUpTeam["{$gamer->gamer->top}-$t2"][$gamer->gamer_id]);
+                }
             } else if ($gamer->gamer->top == 3 && $t3 <= 2) {
-                $arr["{$gamer->gamer->top}-$t3"] = $gamer->gamer->name;
+                $n_top3++;
+                $setUpTeam["{$gamer->gamer->top}-$t3"][$gamer->gamer_id] = $gamer->gamer->name;
+                if ($n_top3 > 2) {
+                    $top = $gamer->gamer->top + 1;
+                    $setUpTeam["{$top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
+                    unset($setUpTeam["{$gamer->gamer->top}-$t3"][$n_top3 - 1]);
+                }
             } else if ($gamer->gamer->top == 4 && $t4 <= 2) {
-                $arr["{$gamer->gamer->top}-$t4"] = $gamer->gamer->name;
+                $setUpTeam["{$gamer->gamer->top}-$t4"][$gamer->gamer_id] = $gamer->gamer->name;
             }
         }
-        return view('aoe.set_up_team');
+
+        return view('aoe.set_up_team', compact('setUpTeam'));
+    }
+
+    public function finishGame(Request $request) {
+        if ($request->has('team1')) {
+            foreach ($request->name_team1 as $team1) {
+                
+            }
+        } elseif ($request->has('team2')) {
+            // Người dùng nhấp vào nút số 2
+        }
     }
 }
