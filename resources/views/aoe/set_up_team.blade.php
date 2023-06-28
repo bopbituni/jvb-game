@@ -6,7 +6,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="w-100 vh-min-100 back-app-main pt-30 pb-100 box-border">
         <div class="home-container text-center">
-
+            @if(!empty($setUpTeam))
             <div class="pt-90 sp-pt-60">
                 <h1 class="font-26 color-app-main">Sắp xếp team hôm nay.</h1>
             </div>
@@ -28,10 +28,10 @@
                             </div>
                             <div class="flex-1 text-center d-flex align-items-center justify-content-center">
                                 <div>
-                                    <div class="font-20 line-height-24 text-bold mb-25">{{ $value }}</div>
-                                                            <a href="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/companies/basic"
+                                    <div class="font-20 line-height-24 text-bold mb-25">{{ $value[0]['name'] }}</div>
+                                        <a href="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/companies/basic"
                                         class="font-16 line-heigh-18 color-white btn-home py-14 px-45 sp-px-20 sp-px-20">詳細はこちら</a>
-                                    <input hidden name="name_team1[{{$key}}]" value="{{ $value[0] }}"/>
+                                    <input hidden name="name_team1[{{$key}}]" value="{{ $value[0]['id'] }}"/>
                                 </div>
                             </div>
                         </div>
@@ -42,16 +42,21 @@
                             </div>
                             <div class="flex-1 d-flex text-center align-items-center justify-content-center">
                                 <div>
-                                    <div class="font-20 line-height-24 text-bold mb-25">{{ $value }}</div>
+                                    <div class="font-20 line-height-24 text-bold mb-25">{{ $value[1]['name'] }}</div>
                                     <a href="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/saleinvoices/ledger"
                                         class="font-16 line-heigh-18 color-white btn-home py-14 px-45 sp-px-20">詳細はこちら</a>
-                                    <input hidden name="name_team2[{{$key}}]" value="{{ $value[1] }}"/>
+                                    <input hidden name="name_team2[{{$key}}]" value="{{ $value[1]['id'] }}"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </form>
+            @else
+            <div class="pt-90 sp-pt-60">
+                <h1 class="font-26 color-app-main">Không có game bây giờ!</h1>
+            </div>
+            @endif
         </div>
     </div>
     <!-- /.content-wrapper -->

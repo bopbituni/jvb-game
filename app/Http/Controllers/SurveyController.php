@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\Gamer;
+use App\Models\History;
 use App\Models\Survey;
 use App\Models\SurveyLink;
 use Carbon\Carbon;
@@ -69,7 +71,6 @@ class SurveyController extends Controller
 
             return view('aoe.survey', compact('gamers', 'desc', 'game', 'token', 'survey'));
         } catch (Exception $e) {
-            dd($e->getMessage());
             abort(404);
         }
     }
@@ -98,7 +99,6 @@ class SurveyController extends Controller
 
             return redirect()->route('survey.done', ['game' => $game, 'token' => $token]);
         } catch (Exception $e) {
-            dd($e->getMessage());
             abort(404);
         }
     }
@@ -129,7 +129,6 @@ class SurveyController extends Controller
             ]);
             return redirect()->route('aoe.show_link_survey', ['token' => $token]);
         } catch (Exception $e) {
-            dd($e->getMessage());
             abort(404);
         }
     }
@@ -144,7 +143,6 @@ class SurveyController extends Controller
                 return view('aoe.create_survey_done', compact('link'));
             }
         } catch (Exception $e) {
-            dd($e->getMessage());
             abort(404);
         }
     }
@@ -195,26 +193,26 @@ class SurveyController extends Controller
         $n_top2 = $n_top3 = 0;
         foreach ($gamers as &$gamer) {
             if ($gamer->gamer->top == 1 && $t1 <= 2) {
-                $setUpTeam["{$gamer->gamer->top}-1"] = [1 => 'Minh', 2 => 'Tuấn'];
-                $setUpTeam["{$gamer->gamer->top}-2"] = [3 => 'Sơn', 4 => 'Tiến'];
+                $setUpTeam["{$gamer->gamer->top}-1"] = [['name' => 'Minh', 'id' => 1], ['name' => 'Tuấn', 'id' => 2]];
+                $setUpTeam["{$gamer->gamer->top}-2"] = [['name' => 'Sơn', 'id' => 3], ['name' => 'Tiến', 'id' => 4]];
             } else if ($gamer->gamer->top == 2 && $t2 <= 2) {
                 $n_top2++;
-                $setUpTeam["{$gamer->gamer->top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
+                $setUpTeam["{$gamer->gamer->top}-$t2"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
                 if ($n_top2 > 2) {
                     $top = $gamer->gamer->top + 1;
-                    $setUpTeam["{$top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
-                    unset($setUpTeam["{$gamer->gamer->top}-$t2"][$gamer->gamer_id]);
+                    $setUpTeam["{$top}-$t2"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
+                    unset($setUpTeam["{$gamer->gamer->top}-$t2"][$n_top2 - 1]);
                 }
             } else if ($gamer->gamer->top == 3 && $t3 <= 2) {
                 $n_top3++;
-                $setUpTeam["{$gamer->gamer->top}-$t3"][$gamer->gamer_id] = $gamer->gamer->name;
+                $setUpTeam["{$gamer->gamer->top}-$t3"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
                 if ($n_top3 > 2) {
                     $top = $gamer->gamer->top + 1;
-                    $setUpTeam["{$top}-$t2"][$gamer->gamer_id] = $gamer->gamer->name;
+                    $setUpTeam["{$top}-$t2"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
                     unset($setUpTeam["{$gamer->gamer->top}-$t3"][$n_top3 - 1]);
                 }
             } else if ($gamer->gamer->top == 4 && $t4 <= 2) {
-                $setUpTeam["{$gamer->gamer->top}-$t4"][$gamer->gamer_id] = $gamer->gamer->name;
+                $setUpTeam["{$gamer->gamer->top}-$t4"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
             }
         }
 
@@ -222,12 +220,53 @@ class SurveyController extends Controller
     }
 
     public function finishGame(Request $request) {
+        $surveyLink = SurveyLink::where('expire_time', '>', Carbon::now())->first();
+        if (!$surveyLink) {
+            return;
+        }
+
         if ($request->has('team1')) {
             foreach ($request->name_team1 as $team1) {
-                
+                History::create([
+                    'is_win' => 1,
+                    'gamer_id' => $team1,
+                    'game_id' => 'aoe'
+                ]);
+                $quantity = Asset::where(['gamer_id' => $team1])->first() ?? 0;
+                Asset::updateOrCreate(['gamer_id' => $team1], ['name' => "Húc", 'quantity' => $quantity['quantity'] + 1]);
+            }
+            foreach ($request->name_team2 as $team2) {
+                History::create([
+                    'is_win' => 0,
+                    'gamer_id' => $team2,
+                    'game_id' => 'aoe'
+                ]);
+                $quantity = Asset::where(['gamer_id' => $team2])->first() ?? 0;
+                Asset::updateOrCreate(['gamer_id' => $team2], ['name' => "Húc", 'quantity' => $quantity['quantity'] - 1]);
             }
         } elseif ($request->has('team2')) {
-            // Người dùng nhấp vào nút số 2
+            foreach ($request->name_team1 as $team1) {
+                History::create([
+                    'is_win' => 0,
+                    'gamer_id' => $team1,
+                    'game_id' => 'aoe'
+                ]);
+                $quantity = Asset::where(['gamer_id' => $team1])->first() ?? 0;
+                Asset::updateOrCreate(['gamer_id' => $team1], ['name' => "Húc", 'quantity' => $quantity['quantity'] - 1]);
+            }
+            foreach ($request->name_team2 as $team2) {
+                History::create([
+                    'is_win' => 1,
+                    'gamer_id' => $team2,
+                    'game_id' => 'aoe'
+                ]);
+                $quantity = Asset::where(['gamer_id' => $team2])->first() ?? 0;
+                Asset::updateOrCreate(['gamer_id' => $team2], ['name' => "Húc", 'quantity' => $quantity['quantity'] + 1]);
+            }
         }
+
+        $surveyLink->update([
+            'expire_time' => Carbon::now()
+        ]);
     }
 }
