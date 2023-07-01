@@ -15,4 +15,9 @@ class Asset extends Model
         'gamer_id',
         'price',
     ];
+
+    public function gamer()
+    {
+        return $this->belongsTo(Gamer::class);
+    }
 }

@@ -26,7 +26,7 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item d-flex align-items-center justify-content-center">
-                <img src="imgs/jvb-vietnam-logo.png" class="width-60 ml-25" />
+                <img src="/imgs/jvb-vietnam-logo.png" class="width-60 ml-25" />
             </li>
         </ul>
 
@@ -38,7 +38,7 @@
             <li class="nav-item d-flex align-items-center justify-content-center dropdown pc">
                 <a class="nav-link font-13 line-height-16 color-black d-flex align-items-center justify-content-center"
                     data-toggle="dropdown" href="#">
-                    <img src="imgs/jvb-vietnam-logo.png" class="img-circle elevation-2 width-30 mr-30 sp-mr-10" alt="User Image"></a>
+                    <img src="/imgs/jvb-vietnam-logo.png" class="img-circle elevation-2 width-30 mr-30 sp-mr-10" alt="User Image"></a>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right flex-wrap">
                     <div class="dropdown-divider"></div>

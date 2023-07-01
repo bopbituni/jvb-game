@@ -86,16 +86,7 @@ class SurveyController extends Controller
             $this->checkToken($token);
 
             $data = $request->except('_token');
-            $isCheckRegister = Survey::where([
-                'gamer_id' => $data['gamer_id'],
-                'is_play' => Gamer::YES,
-                'survey_link_id' => $data['survey_link_id']
-            ])->first();
-
-            if ($isCheckRegister) {
-                abort(404);
-            }
-            Survey::create($data);
+            Survey::updateOrCreate(['gamer_id' => $data['gamer_id'], 'survey_link_id' => $data['survey_link_id']], $data);
 
             return redirect()->route('survey.done', ['game' => $game, 'token' => $token]);
         } catch (Exception $e) {
@@ -268,5 +259,16 @@ class SurveyController extends Controller
         $surveyLink->update([
             'expire_time' => Carbon::now()
         ]);
+    }
+
+    public function showProfileGamer() {
+        $assets = Asset::with('gamer')->get();
+        $gamers = $quantity = [];
+        foreach ($assets as $asset) {
+            $gamers[] = $asset->gamer->name;
+            $quantity[] = $asset->quantity;
+        }
+
+        return view('aoe.profile_gamers', compact('gamers', 'quantity'));
     }
 }
