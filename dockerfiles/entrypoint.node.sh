@@ -4,4 +4,4 @@ set -e
 
 npm install
 
-SHELL=/bin/sh exec npm run watch
+SHELL=/bin/sh exec npm run dev

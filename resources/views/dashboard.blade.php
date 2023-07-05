@@ -92,9 +92,6 @@
         </div>
     </div>
 
-    <form method="POST" action="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/logout" accept-charset="UTF-8" id="logoutForm"><input name="_token" type="hidden" value="3ROLTb0zC8rrUVhfZsOXfvp61ZNhIID2duQMyQbv">
-    </form>
-    <script src="http://ec2-13-231-228-238.ap-northeast-1.compute.amazonaws.com/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
