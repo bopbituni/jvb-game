@@ -180,12 +180,19 @@ class SurveyController extends Controller
         $setUpTeam = [];
         //Số lượng top hiện tại
         $t1 = $t2 = $t3 = $t4 = 1;
+        $arrTop1 = [];
         //Số lượng top tham gia
-        $n_top2 = $n_top3 = 0;
+        $n_top1 = $n_top2 = $n_top3 = 0;
         foreach ($gamers as &$gamer) {
             if ($gamer->gamer->top == 1 && $t1 <= 2) {
-                $setUpTeam["{$gamer->gamer->top}-1"] = [['name' => 'Minh', 'id' => 1], ['name' => 'Tuấn', 'id' => 2]];
-                $setUpTeam["{$gamer->gamer->top}-2"] = [['name' => 'Sơn', 'id' => 3], ['name' => 'Tiến', 'id' => 4]];
+                $arrTop1[] = $gamer->gamer->id;
+
+                $setUpTeam["{$gamer->gamer->top}-$t1"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
+                if ($n_top1 > 2) {
+                    $top = $gamer->gamer->top + 1;
+                    $setUpTeam["{$top}-$t1"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
+                    unset($setUpTeam["{$gamer->gamer->top}-$t1"][$n_top1 - 1]);
+                }
             } else if ($gamer->gamer->top == 2 && $t2 <= 2) {
                 $n_top2++;
                 $setUpTeam["{$gamer->gamer->top}-$t2"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
@@ -205,6 +212,11 @@ class SurveyController extends Controller
             } else if ($gamer->gamer->top == 4 && $t4 <= 2) {
                 $setUpTeam["{$gamer->gamer->top}-$t4"][] = ['name' => $gamer->gamer->name, 'id' => $gamer->gamer_id];
             }
+        }
+
+        if ($arrTop1 == [1,2,3,4]) {
+            $setUpTeam["1-1"] = [['name' => 'Minh', 'id' => 1], ['name' => 'Tuấn', 'id' => 2]];
+            $setUpTeam["1-2"] = [['name' => 'Tiến', 'id' => 4], ['name' => 'Sơn', 'id' => 3]];
         }
 
         return view('aoe.set_up_team', compact('setUpTeam'));

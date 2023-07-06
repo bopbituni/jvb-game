@@ -23,29 +23,33 @@
             @endphp
             <div class="d-flex mt-50 sp-mt-30 sp-flex-wrap sortable-container">
                 <div class="flex-1 back-white mx-2 mb-14 d-flex sortable-item">
+                    @if(!empty($value[0]))
                     <div class="flex-2">
                         <img src="/assets/imgs/ico_service1.svg" class="height-150 width-175 px-10 py-10" />
                     </div>
                     <div class="flex-1 text-center d-flex align-items-center justify-content-center">
                         <div>
-                            <div class="font-20 line-height-24 text-bold mb-25">{{ !empty($value[0]) ? $value[0]['name'] : '' }}</div>
+                            <div class="font-20 line-height-24 text-bold mb-25">{{ $value[0]['name'] }}</div>
                             <a href="{{ route('aoe.profile_gamers') }}" class="font-16 line-heigh-18 color-white btn-home py-14 px-45 sp-px-20 sp-px-20">Chi tiết</a>
-                            <input type="hidden" name="name_team1[]" value="{{ $value[0]['id'] }}" />
+                            <input type="hidden" name="name_team1[]" value="{{ $value[0]['name'] }}" />
                         </div>
                     </div>
+                    @endif
                 </div>
 
                 <div class="flex-1 back-white mx-2 mb-14 d-flex sortable-item">
+                    @if(!empty($value[1]))
                     <div class="flex-2">
                         <img src="/assets/imgs/ico_service2.svg" class="height-150 width-175 px-10 py-10" />
                     </div>
                     <div class="flex-1 d-flex text-center align-items-center justify-content-center">
                         <div>
-                            <div class="font-20 line-height-24 text-bold mb-25">{{ !empty($value[1]) ? $value[1]['name'] : '' }}</div>
+                            <div class="font-20 line-height-24 text-bold mb-25">{{ $value[1]['name'] }}</div>
                             <a href="{{ route('aoe.profile_gamers') }}" class="font-16 line-heigh-18 color-white btn-home py-14 px-45 sp-px-20">Chi tiết</a>
-                            <input type="hidden" name="name_team2[]" value="{{ $value[1]['id'] }}" />
+                            <input type="hidden" name="name_team2[]" value="{{ $value[1]['name'] }}" />
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
             @endforeach
